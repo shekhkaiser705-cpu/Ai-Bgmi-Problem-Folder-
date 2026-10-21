@@ -1,2 +1,333 @@
 
-{ box-sizing: border-box; } body { margin: 0; padding: 20px; background: #0b1020; color: #ffffff; font-family: Arial, sans-serif; } .container { max-width: 600px; margin: 35px auto; padding: 24px; background: #151d33; border: 1px solid #293653; border-radius: 18px;} h1 { color: #55e6a5; text-align: center; font-size: 28px;} .subtitle { text-align: center; color: #c5cee0; line-height: 1.6;} label { display:block; margin: 22px 0 10px; font-weight:bold;} select, textarea { width:100%; padding: 13px; border: 1px solid #465674; border-radius: 10px; background: #0b1020; color: white; font-size:16px;} textarea { min-height: 115px; resize: vertical;} button { width: 100%; padding: 14px; margin-top: 16px; border: none; border-radius: 10px; background: #55e6a5; color: #07150f; font-size: 16px; font-weight: bold; cursor: pointer;} #result { display:none; margin-top: 22px; padding: 16px; border-radius: 12px; background: #0b1020; border-left: 4px solid #55e6a5;} .note { margin-top: 22px; color: #aebbd2; font-size: 13px; }    main containerAI BGMI Problem Finder  Find possible solutions to your BGMI problems. Describe your issue and get troubleshooting steps. label for="problem">Select Your Problem select id="problem"> option value="general"> Other Problem </option option value="fps">FPS Drop / Stuttering </option option value="fo>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="description" content="A BGMI troubleshooting helper by TechGEmperor.">
+  <title>AI BGMI Problem Finder | TechGEmperor</title>
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b1020;
+      --panel: #151d33;
+      --border: #293653;
+      --text: #ffffff;
+      --muted: #c5cee0;
+      --accent: #55e6a5;
+      --input: #0b1020;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 18px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+      line-height: 1.55;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 680px;
+      margin: 24px auto;
+      padding: 24px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      color: var(--accent);
+      text-align: center;
+      font-size: clamp(24px, 5vw, 30px);
+      line-height: 1.25;
+    }
+
+    .subtitle {
+      margin: 0 0 22px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin: 20px 0 8px;
+      font-weight: 700;
+    }
+
+    select,
+    textarea {
+      display: block;
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #465674;
+      border-radius: 10px;
+      background: var(--input);
+      color: var(--text);
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    select:focus-visible,
+    textarea:focus-visible,
+    button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 16px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #07150f;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover {
+      filter: brightness(.95);
+    }
+
+    #result {
+      display: none;
+      margin-top: 22px;
+      padding: 16px;
+      border-radius: 12px;
+      background: var(--bg);
+      border-left: 4px solid var(--accent);
+      overflow-wrap: anywhere;
+    }
+
+    #result h2 {
+      margin-top: 0;
+      color: var(--accent);
+      font-size: 21px;
+    }
+
+    #result ol {
+      padding-left: 22px;
+    }
+
+    #result li {
+      margin: 8px 0;
+    }
+
+    .note {
+      margin: 20px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    footer {
+      margin-top: 24px;
+      color: #aebbd2;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+
+      .container {
+        margin: 10px auto;
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <h1>AI BGMI Problem Finder</h1>
+
+    <p class="subtitle">
+      Choose a problem, describe what happens, and review safe troubleshooting steps to test.
+    </p>
+
+    <form id="problemForm">
+      <label for="problem">Select Your Problem</label>
+
+      <select id="problem" name="problem">
+        <option value="other">Other Problem</option>
+        <option value="fps">FPS Drop / Stuttering</option>
+        <option value="ping">High Ping / Ping Spikes</option>
+        <option value="freeze">Game Freezing During Fights</option>
+        <option value="footsteps">Footsteps Too Quiet</option>
+        <option value="audio">Audio Direction Problem</option>
+        <option value="loading">Loading / Login Problem</option>
+        <option value="matchmaking">Matchmaking Problem</option>
+        <option value="crash">Game Crashing</option>
+        <option value="controls">Sensitivity / Recoil Problem</option>
+        <option value="update">Problem After Update</option>
+      </select>
+
+      <label for="description">
+        Describe Your Problem
+      </label>
+
+      <textarea
+        id="description"
+        name="description"
+        maxlength="1000"
+        placeholder="Example: My ping suddenly increases during fights, even when my signal looks stable."
+      ></textarea>
+
+      <button type="submit">Find Possible Solutions</button>
+    </form>
+
+    <section
+      id="result"
+      aria-live="polite"
+      aria-atomic="true"
+    ></section>
+
+    <p class="note">
+      <strong>Important:</strong>
+      This is a rule-based troubleshooting helper, not a live AI diagnosis.
+      Suggestions are not guaranteed fixes. Test one change at a time,
+      and avoid unofficial APKs or files.
+    </p>
+
+    <footer>
+      AI BGMI Problem Finder · TechGEmperor
+    </footer>
+  </main>
+
+  <script>
+    "use strict";
+
+    const solutions = {
+      fps: {
+        title: "FPS Drop / Stuttering",
+        intro: "Let's narrow down when the stutter happens before changing settings.",
+        steps: [
+          "Note whether the FPS drop happens while landing, during fights, or throughout the match.",
+          "Check the graphics and frame-rate options available on your device; test one stable combination at a time.",
+          "Close unnecessary background apps and check whether the phone is getting hot.",
+          "Check that enough storage is available and pause large downloads or updates while playing.",
+          "If the issue began after a BGMI update, compare results across a few matches and check official announcements."
+        ]
+      },
+
+      ping: {
+        title: "High Ping / Ping Spikes",
+        intro: "A ping spike can come from the connection, local network use, or the game service.",
+        steps: [
+          "Check whether other online apps also become slow at the same time.",
+          "Pause downloads, uploads, and other high-bandwidth activity on your connection.",
+          "If using Wi-Fi, test closer to the router; if using mobile data, check signal stability.",
+          "Compare at another time or on another trusted connection, if available.",
+          "If the issue affects many players, check official BGMI service announcements before changing device settings."
+        ]
+      },
+
+      freeze: {
+        title: "Game Freezing During Fights",
+        intro: "Identify whether the freeze is tied to heat, performance, or a specific in-game moment.",
+        steps: [
+          "Note when the freeze occurs and whether it lasts for a moment or forces the game to close.",
+          "Check device temperature and close unnecessary background apps.",
+          "Check available storage and use a graphics/frame-rate setting supported by your device.",
+          "Restart the game and phone, then test in a training area or a low-pressure match.",
+          "If it started after an update, check for official patches or support notices."
+        ]
+      },
+
+      footsteps: {
+        title: "Footsteps Too Quiet",
+        intro: "Check game audio and device output before changing other settings.",
+        steps: [
+          "Open BGMI Settings and find Audio; check the SFX or sound-effects volume.",
+          "Raise SFX to a comfortable level and test again; don't rely only on the phone's media volume.",
+          "Check headphone connection, battery if wireless, and phone media volume.",
+          "Compare your usual headphones with another known-working output if available.",
+          "Test in Training Ground and change only one audio setting at a time."
+        ]
+      },
+
+      audio: {
+        title: "Audio Direction Problem",
+        intro: "The sound may be affected by the output device or audio processing.",
+        steps: [
+          "Make sure the left and right headphone sides are worn correctly and the connection is stable.",
+          "Test with another known-working headset or the phone speaker for comparison.",
+          "Check BGMI audio settings and your phone's audio balance settings.",
+          "Temporarily disable extra surround or sound-enhancement effects and compare.",
+          "Test in Training Ground before making additional changes."
+        ]
+      },
+
+      loading: {
+        title: "Loading / Login Problem",
+        intro: "Check connection and service status before reinstalling anything.",
+        steps: [
+          "Switch between your usual trusted network options, if available, and retry.",
+          "Close and reopen BGMI, then restart the phone if needed.",
+          "Check available storage and whether the game has an official update.",
+          "Check official BGMI announcements for maintenance or login issues.",
+          "Use only official in-game repair/support options. Confirm your account is linked before any reinstall."
+        ]
+      },
+
+      matchmaking: {
+        title: "Matchmaking Problem",
+        intro: "The issue may be specific to a mode, team, or current game service.",
+        steps: [
+          "Check that the selected mode and map are currently available.",
+          "Make sure teammates have compatible game versions.",
+          "Try another available mode to see whether the issue is mode-specific.",
+          "Check your connection and retry after a short wait.",
+          "Check official announcements for maintenance or matchmaking problems."
+        ]
+      },
+
+      crash: {
+        title: "Game Crashing",
+        intro: "Start with basic checks and avoid unofficial game files.",
+        steps: [
+          "Restart BGMI and your phone.",
+          "Check free storage and close unnecessary background apps.",
+          "Check whether the phone is overheating during play.",
+          "Install updates only from the official app store or official game channel.",
+          "If crashes continue, note when they happen and contact official support."
+        ]
+      },
+
+      controls: {
+        title: "Sensitivity / Recoil Problem",
+        intro: "Use a controlled test so you can tell which setting actually helps.",
+        steps: [
+          "Record or screenshot your current sensitivity settings first.",
+          "Test one scope and one weapon at a time in Training Ground.",
+          "Change only one relevant sensitivity value slightly, then repeat the same test.",
+          "Compare standing, crouching, and different firing distances separately.",
+          "Keep the setting that gives you repeatable control; there is no single best sensitivity for every player."
+        ]
+      },
+
+      update: {
+        title: "Problem After Update",
+        intro: "First identify whether the issue is widespread or limited to your device.",
+        steps: [
+          "Write down the problem started, which map or mode it happens in, and whether it began after an update. Restart BGMI and your phone, then test again. Check whether the issue happens in every match or only in one match  
+
+
+    
